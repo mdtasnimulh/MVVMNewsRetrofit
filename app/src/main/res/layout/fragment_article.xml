@@ -9,6 +9,12 @@
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/tvArticles"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="TTTTTT"-->
+<!--        android:gravity="center"/>-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

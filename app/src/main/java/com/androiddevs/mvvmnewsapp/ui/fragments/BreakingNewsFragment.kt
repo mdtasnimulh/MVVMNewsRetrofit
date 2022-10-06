@@ -6,12 +6,12 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.androiddevs.mvvmnewsapp.R
 import com.androiddevs.mvvmnewsapp.adapters.NewsAdapter
 import com.androiddevs.mvvmnewsapp.db.ArticleDatabase
 import com.androiddevs.mvvmnewsapp.repository.NewsRepository
-import com.androiddevs.mvvmnewsapp.ui.MainActivity
 import com.androiddevs.mvvmnewsapp.ui.NewsViewModel
 import com.androiddevs.mvvmnewsapp.ui.NewsViewModelProviderFactory
 import com.androiddevs.mvvmnewsapp.util.Resource
@@ -26,7 +26,7 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //dhar from main acrivity cause not getting here
+
         val newsRepository = NewsRepository(ArticleDatabase(requireContext()))
         val viewModelProviderFactory = NewsViewModelProviderFactory(newsRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(NewsViewModel::class.java)
@@ -34,6 +34,16 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
         //viewModel = (activity as MainActivity).viewModel
 
         setUpRecyclerView()
+
+        newsAdapter.setOnItemCLickListener {
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
+            }
+            findNavController().navigate(
+                R.id.action_breakingNewsFragment2_to_articleFragment,
+                bundle
+            )
+        }
 
         viewModel.breakingNews.observe(viewLifecycleOwner, Observer { response ->
             when (response){
