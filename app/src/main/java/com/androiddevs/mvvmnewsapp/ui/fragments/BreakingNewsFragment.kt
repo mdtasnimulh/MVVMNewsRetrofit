@@ -37,12 +37,13 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
 
         newsAdapter.setOnItemCLickListener {
             val bundle = Bundle().apply {
-                putSerializable("article", it)
+                putString("url", it)
             }
             findNavController().navigate(
                 R.id.action_breakingNewsFragment2_to_articleFragment,
                 bundle
             )
+
         }
 
         viewModel.breakingNews.observe(viewLifecycleOwner, Observer { response ->

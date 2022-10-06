@@ -1,5 +1,6 @@
 package com.androiddevs.mvvmnewsapp.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,12 +42,17 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
         val article = differ.currentList[position]
         holder.itemView.apply {
             Glide.with(this).load(article.urlToImage).into(ivArticleImage)
-            tvSource.text = article.source.name
+            tvSource.text = article.source?.name
             tvTitle.text = article.title
             tvDescription.text = article.description
             tvPublishedAt.text = article.publishedAt
+            Log.d("urlFromApi", "${article.url}")
             setOnClickListener {
-                onItemClickListener?.let { it(article) }
+                if (article.url != null) {
+                    onItemClickListener?.let {
+                        it(article.url)
+                    }
+                }
             }
         }
     }
@@ -55,9 +61,8 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
         return differ.currentList.size
     }
 
-    private var onItemClickListener: ((Article) -> Unit)? = null
-
-    fun setOnItemCLickListener(listener: (Article) -> Unit) {
+    private var onItemClickListener: ((url: String) -> Unit)? = null
+    fun setOnItemCLickListener(listener: (url: String) -> Unit) {
         onItemClickListener = listener
     }
 

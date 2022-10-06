@@ -26,10 +26,10 @@ class ArticleFragment: Fragment(R.layout.fragment_article) {
         val viewModelProviderFactory = NewsViewModelProviderFactory(newsRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(NewsViewModel::class.java)
 
-        val article = args.article
+        val article = args.url
         webView.apply {
             webViewClient = WebViewClient()
-            loadUrl(article.url)
+            loadUrl(article?:"")
         }
         //tvArticles.text = article.description
     }
