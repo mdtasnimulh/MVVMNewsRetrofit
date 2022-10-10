@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -16,9 +17,11 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
     inner class ArticleViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
+    var onItemClicked: ((Article) -> Unit)? = null
+
     private val differCallBack = object : DiffUtil.ItemCallback<Article>(){
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
-            return oldItem.url == newItem.url
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
@@ -48,11 +51,21 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
             tvPublishedAt.text = article.publishedAt
             Log.d("urlFromApi", "${article.url}")
             setOnClickListener {
-                if (article.url != null) {
+                /*if (article.url != null) {
                     onItemClickListener?.let {
                         it(article.url)
                     }
+                }*/
+                /*if (article.url == null){
+                    Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_SHORT).show()
+                    Log.d("urlFromApi", "${article.url}")
                 }
+                else{
+                    onItemClickListener?.let {
+                        it(article!!)
+                    }
+                }*/
+                onItemClicked?.invoke(article)
             }
         }
     }
@@ -61,9 +74,9 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
         return differ.currentList.size
     }
 
-    private var onItemClickListener: ((url: String) -> Unit)? = null
-    fun setOnItemCLickListener(listener: (url: String) -> Unit) {
+    /*private var onItemClickListener: ((Article) -> Unit)? = null
+    fun setOnItemCLickListener(listener: (Article) -> Unit) {
         onItemClickListener = listener
-    }
+    }*/
 
 }

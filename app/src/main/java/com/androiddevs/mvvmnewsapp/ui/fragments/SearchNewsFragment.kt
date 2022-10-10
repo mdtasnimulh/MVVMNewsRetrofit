@@ -3,6 +3,7 @@ package com.androiddevs.mvvmnewsapp.ui.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -39,15 +40,25 @@ class SearchNewsFragment: Fragment(R.layout.fragment_search_news) {
 
         setUpRecyclerView()
 
-        newsAdapter.setOnItemCLickListener {
-            /*val bundle = Bundle().apply {
+        /*newsAdapter.setOnItemCLickListener {
+            *//*val bundle = Bundle().apply {
                 putSerializable("article", it)
-            }*/
-            val bundle = Bundle().apply {
-                putString("url", it)
             }
+            *//**//*val bundle = Bundle().apply {
+                putString("url", it)
+            }*//**//*
             findNavController().navigate(
                 R.id.action_searchNewsFragment2_to_articleFragment,
+                bundle
+            )*//*
+        }*/
+        newsAdapter.onItemClicked = { model ->
+            //Log.d("Article", "${model}")
+            val bundle = bundleOf(
+                "article" to model
+            )
+            findNavController().navigate(
+                R.id.action_breakingNewsFragment2_to_articleFragment,
                 bundle
             )
         }

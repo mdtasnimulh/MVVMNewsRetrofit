@@ -3,6 +3,7 @@ package com.androiddevs.mvvmnewsapp.ui.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.androiddevs.mvvmnewsapp.R
 import com.androiddevs.mvvmnewsapp.adapters.NewsAdapter
 import com.androiddevs.mvvmnewsapp.db.ArticleDatabase
+import com.androiddevs.mvvmnewsapp.models.Article
 import com.androiddevs.mvvmnewsapp.repository.NewsRepository
 import com.androiddevs.mvvmnewsapp.ui.NewsViewModel
 import com.androiddevs.mvvmnewsapp.ui.NewsViewModelProviderFactory
@@ -21,6 +23,8 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
 
     private lateinit var viewModel: NewsViewModel
     private lateinit var newsAdapter: NewsAdapter
+
+
 
     val TAG = "BreakingNewsFragment"
 
@@ -35,15 +39,29 @@ class BreakingNewsFragment: Fragment(R.layout.fragment_breaking_news) {
 
         setUpRecyclerView()
 
-        newsAdapter.setOnItemCLickListener {
-            val bundle = Bundle().apply {
+        /*newsAdapter.setOnItemCLickListener {
+            *//*val bundle = Bundle().apply {
                 putString("url", it)
-            }
+            }*//*
+            val bundle = bundleOf(
+                "article" to it
+            )
             findNavController().navigate(
                 R.id.action_breakingNewsFragment2_to_articleFragment,
                 bundle
             )
 
+        }*/
+
+        newsAdapter.onItemClicked = { model ->
+            //Log.d("Article", "${model}")
+            val bundle = bundleOf(
+                "article" to model
+            )
+            findNavController().navigate(
+                R.id.action_breakingNewsFragment2_to_articleFragment,
+                bundle
+            )
         }
 
         viewModel.breakingNews.observe(viewLifecycleOwner, Observer { response ->
